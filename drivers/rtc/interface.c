@@ -269,7 +269,7 @@ int rtc_read_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
 }
 EXPORT_SYMBOL_GPL(rtc_read_alarm);
 
-#ifdef CONFIG_HTC_POWERSAVE_MODE_ALARM
+#if defined(CONFIG_HTC_POWERSAVE_MODE_ALARM) && defined(CONFIG_HTC_PNPMGR)
 extern int powersave_enabled;
 #endif
 
@@ -295,7 +295,7 @@ static int __rtc_set_alarm(struct rtc_device *rtc, struct rtc_wkalrm *alarm)
 	else if (!rtc->ops->set_alarm)
 		err = -EINVAL;
 	else {
-#ifdef CONFIG_HTC_POWERSAVE_MODE_ALARM
+#if defined(CONFIG_HTC_POWERSAVE_MODE_ALARM) && defined(CONFIG_HTC_PNPMGR)
 		if ((powersave_enabled == 2) && (alarm->time.tm_sec > 0)) {
 			alarm->time.tm_sec = 0;
 			alarm->time.tm_min++;
